@@ -1,18 +1,24 @@
 <template>
-    <div>
-      <div class="container">
-        <AuthCard />
-      </div>
+  <div>
+    <div class="container">
+      <!-- {{ supabase }} -->
+      <AuthCard />
     </div>
-  </template>
+  </div>
+</template>
   
+<script setup lang="ts" >
+console.log("i AM INDEX")
+const { supabase } = useSupabase();
+
+</script>
   <style scoped>
-  .container {
-    max-width: 50%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-  }
-  </style>
+.container {
+  max-width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+</style>

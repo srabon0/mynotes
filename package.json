@@ -13,6 +13,8 @@
     "nuxt": "^3.5.1"
   },
   "dependencies": {
-    "@nuxt/ui": "^0.4.1"
+    "@nuxt/ui": "^0.4.1",
+    "@supabase/supabase-js": "^2.22.0",
+    "axios": "^1.4.0"
   }
 }

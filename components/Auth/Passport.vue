@@ -1,14 +1,13 @@
 <script setup lang="ts">
 const authState = ref<"login" | "signup">("login");
 const authError = ref("");
-const showConfirmEmailMessage = ref(false);
 const input = reactive({
   password: "",
-  email: "",
+  username: "",
 });
 const router = useRouter();
 
-const { signUp, signIn, user, signOut } = useAuth();
+const { signUp, signIn, } = usePassport();
 
 const toggleAuthState = () => {
   if (authState.value === "login") authState.value = "signup";
@@ -19,13 +18,18 @@ const toggleAuthState = () => {
 const handleSubmit = async () => {
   try {
     if (authState.value === "login") {
-      await signIn({ email: input.email, password: input.password });
-      router.push("/myprofile");
-    } else {
-      await signUp({ email: input.email, password: input.password });
-      showConfirmEmailMessage.value = true;
+      const data = await signIn({ username: input.username, password: input.password });
+      console.log("login data", data);
+      if(!data.token) return
+      else if(data.token.length){ 
+        router.push("/success"); 
+        localStorage.setItem('token',data.token)  
     }
-    input.email = "";
+    } else {
+      const data = await signUp({ username: input.username, password: input.password });
+      console.log("sign up data", data);
+    }
+    input.username = "";
     input.password = "";
   } catch (err) {
     authError.value = err.message;
@@ -36,10 +40,10 @@ const handleSubmit = async () => {
 <template>
   <div>
     <NCard class="card">
-      <div v-if="!showConfirmEmailMessage">
+      <div>
         <h3>{{ authState }}</h3>
         <div class="input-container">
-          <input placeholder="Email" v-model="input.email" />
+          <input placeholder="Email" v-model="input.username" />
           <input
             placeholder="Password"
             v-model="input.password"
@@ -56,9 +60,9 @@ const handleSubmit = async () => {
           }}
         </p>
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <h3>Check email for confirmation message</h3>
-      </div>
+      </div> -->
     </NCard>
   </div>
 </template>
